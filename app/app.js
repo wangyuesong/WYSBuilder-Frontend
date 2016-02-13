@@ -8,7 +8,10 @@ var myApp = angular.module('myApp', [
     'myApp.version',
     'myApp.login'
 ]).config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/', {redirectTo: '/login'}).when('/login', {templateUrl: 'login/login.html'}).otherwise({redirectTo: '/login'});
+    $routeProvider.when('/', {redirectTo: '/login'}).
+    when('/login', {templateUrl: 'login/login.html',controller:'LoginController'}).
+    otherwise({redirectTo: '/login'});
+
 }]);
 
 myApp.controller('myAppController',['$scope','authService',function($scope,authService){
