@@ -1,66 +1,35 @@
-(function () {
-  'use strict';
-  angular.module('myApp.login')
-      .controller('LoginController',LoginController);
+'use strict';
+var myAppLogin = angular.module('myApp.login', ['base64']);
 
-  //Controller
-  LoginController.$inject = ['$scope','AuthService'];
-  function LoginController($scope,authService){
+myAppLogin.controller('LoginController', LoginController);
+
+//Controller
+LoginController.$inject = ['$scope', 'AuthService'];
+function LoginController($scope, AuthService) {
     $scope.credential = {};
     $scope.login = function (credential) {
-      authService.login(credential).then(function (user) {
+        AuthService.doLogin(credential).then(function (res) {
+            if (res.data.type === 'SUCCESS') {
+                AuthService.doSetCredential(credential.email, credential.password);
+                console.log("User has set credential");
+            } else {
 
-      })
-    }
-  };
-
-
-
-  //LoginService
-  angular.module('myApp.login').factory('AuthService',AuthService);
-
-  AuthService.$inject(['session','$http']);
-  function AuthService(session, $http){
-    var authService = {};
-
-    authService.login = function (credential) {
-      console.log(credential.email);
-      var url = 'http://127.0.0.1:8080/rest/user';
-      session.create(1, 1);
-      return $http.post(url, credential).then(function (res) {
-        console.log("Here");
-      })
+            }
+        })
     };
 
-    authService.isAuthenticated = function () {
-      return !!session.userId;
+    $scope.test = function () {
+        AuthService.doTest({'key':'shit'});
     }
-
-    return authService;
-  }
-
-  //SessionService
-  angular.module('myApp.login').service('SessionService',SessionService);
-  SessionService.$inject([]);
-  function SessionService(){
-    this.create = function (sessionId, userId) {
-      this.id = sessionId;
-      this.userId = userId;
-    };
-    this.destory = function () {
-      this.id = null;
-      this.userId = null;
-    }
-  }
+};
 
 
-  //Constants
-  myApp.constant('AUTH_EVENTS', {
+//Constants
+myApp.constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',
     loginFailed: 'auth-login-failed',
     logoutSuccess: 'auth-logout-success',
     sessionTimeout: 'auth-session-timeout',
     notAuthenticated: 'auth-not-authenticated',
     notAuthorized: 'auth-not-authorized'
-  })
-})();
+});
