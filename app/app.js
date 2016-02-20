@@ -4,33 +4,40 @@
 var myApp = angular.module('myApp', [
     'ngRoute',
     'ngCookies',
-    'myApp.view1',
+    'myApp.home',
     'myApp.view2',
     'myApp.version',
     'myApp.login'
 ]).config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/', {redirectTo: '/login'}).
-    when('/login', {templateUrl: 'login/login.html',controller:'LoginController'}).
-    otherwise({redirectTo: '/login'});
+    $routeProvider
+        .when('/login', {
+        templateUrl: 'login/login.html',
+        controller: 'LoginController'
+    }).when('/home', {
+        templateUrl: 'home/home.html',
+        controller: 'HomeController'
+    })
 }]).run(run);
 
-myApp.controller('myAppController',['$scope','AuthService',function($scope,AuthService){
+myApp.controller('myAppController', ['$scope', 'AuthService', function ($scope, AuthService) {
     $scope.currentUser = null;
     $scope.isAuthorized = AuthService.isAuthorized;
-    $scope.setCurrentUser = function(user){
+    $scope.setCurrentUser = function (user) {
         $scope.currentUser = user;
     }
-}])
+}]);
 
-run.$inject = ['$rootScope','$cookieStore','$http','$location'];
-function run($rootScope, $cookieStore, $http, $location){
+
+
+run.$inject = ['$rootScope', '$cookieStore', '$http', '$location'];
+function run($rootScope, $cookieStore, $http, $location) {
     $rootScope.globals = $cookieStore.get('globals') || {};
-    if($rootScope.globals.currentUser){
+    if ($rootScope.globals.currentUser) {
         console.log("User has logged in");
         $http.defaults.headers.common.Authorization = 'Basic ' + $rootScope.globals.currentUser.authData;
     }
 
-    $rootScope.$on("$locationChangeStart",function(event,next,current){
+    $rootScope.$on("$locationChangeStart", function (event, next, current) {
         var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
         var loggedIn = $rootScope.globals.currentUser;
         if (restrictedPage && !loggedIn) {

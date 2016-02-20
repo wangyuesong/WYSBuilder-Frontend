@@ -1,15 +1,17 @@
 <div ng-controller="LoginController">
-    <form role="form" name="form1">
-        <div class="form-group">
-            <p>Welcome:{{credential.email}}</p>
-            <label>Mail:</label>
-            <input type="text" placeholder="Enter email" class="form-control" ng-model="credential.email">
-        </div>
-        <div class="form-group">
-            <label>Password:</label>
-            <input type="password" placeholder="Password" id="pass" class="form-control" required ng-model="credential.password">
-        </div>
-        <button class="btn btn-default" type="submit" ng-disabled="form1.$invalid" ng-click="login(credential)">Submit</button>
-        <button class="btn btn-default" type="submit" ng-disabled="form1.$invalid" ng-click="test()">Test</button>
-    </form>
+    <!--<form role="form" name="form1">-->
+        <!--<div class="form-group">-->
+            <!--<p>Welcome:{{credential.email}}</p>-->
+            <!--<label>Mail:</label>-->
+            <!--<input type="text" placeholder="Enter email" class="form-control" ng-model="credential.email">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label>Password:</label>-->
+            <!--<input type="password" placeholder="Password" id="pass" class="form-control" required ng-model="credential.password">-->
+        <!--</div>-->
+        <!--<button class="btn btn-default" type="submit" ng-disabled="form1.$invalid" ng-click="login(credential)">Submit</button>-->
+        <!--<button class="btn btn-default" type="submit" ng-disabled="form1.$invalid" ng-click="test()">Test</button>-->
+    <!--</form>-->
+    <button ng-click="authenticate('github')">Sign in with GitHub</button>
+    <button class="btn btn-default" type="submit" ng-disabled="form1.$invalid" ng-click="githubOAuth()">Test</button>
 </div>

@@ -14,6 +14,11 @@ function AuthService($http, $cookieStore, $base64, $rootScope){
         return $http.post(url, credential);
     };
 
+    //Auth callback
+    authService.doAuthCallback = function(){
+
+    }
+
     //Set credential
     authService.doSetCredential = function(email,password){
         var authData = $base64.encode(email + ':' + password);
@@ -39,7 +44,6 @@ function AuthService($http, $cookieStore, $base64, $rootScope){
     //Test
     authService.doTest = function(test){
         var url = g_server_ip + '/rest/test';
-
         $http.post(url,test);
     };
 
