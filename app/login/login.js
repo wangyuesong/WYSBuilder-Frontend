@@ -34,7 +34,6 @@ function LoginController($scope, AuthService,$window,$auth) {
     }
 
     $scope.githubOAuth = function(){
-
         $window.location.href = 'https://github.com/login/oauth/authorize?client_id=2dec25a28baf921db035&scope=user,repo&state=' + generateRandomString();
     };
 
