@@ -1,6 +1,6 @@
-'use strict';
-
-var myAppHome = angular.module('myApp.home',[]);
-
-myAppHome.controller('HomeController', [function() {
-}]);
+//'use strict';
+//
+//var myAppHome = angular.module('myApp.home',[]);
+//
+//myAppHome.controller('HomeController', [function() {
+//}]);

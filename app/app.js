@@ -4,55 +4,110 @@
 var myApp = angular.module('myApp', [
     'ngRoute',
     'ngCookies',
-    'myApp.home',
-    'myApp.view2',
     'myApp.version',
-    'myApp.login',
-    'myApp.oauth'
-]).config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-    $routeProvider.when('/home', {
-        templateUrl: 'home/home.html',
-        controller: 'HomeController'
-    }).when('/login', {
-        templateUrl: 'login/login.html',
-        controller: 'LoginController'
-    }).when('/oauthCallback', {
-        template: '',
-        controller: 'OAuthController'
-    });
+    'myApp.repo',
+    'myApp.oneRepo',
+    'ngStorage',
+    'ui.router'
+]);
 
-    $locationProvider.html5Mode(
-        {
-            enabled: true,
-        })
-        .hashPrefix('!');
+/**
+ * Constant
+ */
+myApp.constant('OAUTH_IO_PUBLIC_KEY','sd_5pFI5b58he3Ku1erCZh8qg3w');
+myApp.constant('REST_API_ENDPOINT','http://127.0.0.1:8080/rest');
+
+/**
+ * Config
+ */
+myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+
+    $.noty.defaults.timeout = 2000;
+    $locationProvider.html5Mode(true);
+    $urlRouterProvider.otherwise("/index");
+    $stateProvider
+        .state('index', {url: '/index', templateUrl: 'partials/index.partial.html'})
+        .state('repos', {url: '/users/:userId/repos', templateUrl: 'partials/repos.partial.html',controller:'RepoController'})
+        .state('oneRepo',{url: '/users/:userId/repos/:repoId',templateUrl:'partials/oneRepo.partial.html',controller: 'OneRepoController'});
 }]).run(run);
 
-myApp.controller('myAppController', ['$scope', 'AuthService', function ($scope, AuthService) {
-    $scope.currentUser = null;
-    $scope.isAuthorized = AuthService.isAuthorized;
-    $scope.setCurrentUser = function (user) {
-        $scope.currentUser = user;
-    }
+/**
+ * Controller
+ */
+myApp.controller('MyAppController', ['$scope', 'AuthService', '$localStorage','OAUTH_IO_PUBLIC_KEY','$http',function($scope, AuthService, $localStorage,OAUTH_IO_PUBLIC_KEY,$http) {
+
+    $http.defaults.headers.common['Authentication'] = $localStorage.userToken;
+
+    $scope.isLoggedIn = $localStorage.userInfo;
+    $scope.currentUser = $localStorage.userInfo;
+
+    $scope.githubOAuth = function () {
+        OAuth.initialize(OAUTH_IO_PUBLIC_KEY);
+        OAuth.popup('github').done(function (result) {
+            AuthService.doOAuthRegister(result).success(function (data) {
+                $localStorage.userInfo = data.userInfo;
+                $localStorage.userToken = data.userToken;
+                $scope.isLoggedIn = $localStorage.userInfo;
+                $scope.currentUser = $localStorage.userInfo;
+                $http.defaults.headers.common['Authentication'] = data.userToken;
+                noty({text: 'You successfully logined with Github'}).setType('success');
+            }).error(function(data){
+                noty({text: 'Login Failed'}).setType('error');
+            })
+
+        }).fail(function(err){
+            alert(err);
+        })
+    };
+
 }]);
 
+//MyAppController.$inject = ['$scope', 'AuthService','$localStorage','OAUTH_IO_PUBLIC_KEY'];
+//function MyAppController($scope, AuthService, $localStorage,OAUTH_IO_PUBLIC_KEY) {
+//    $scope.isLoggedIn = $localStorage.userInfo;
+//    $scope.currentUser = $localStorage.userInfo;
+//
+//
+//    $scope.githubOAuth = function () {
+//        OAuth.initialize(OAUTH_IO_PUBLIC_KEY);
+//        OAuth.popup('github').done(function (result) {
+//            AuthService.doOAuthRegister(result).success(function (data) {
+//                $localStorage.userInfo = data.userInfo;
+//                $localStorage.userToken = data.userToken;
+//                noty({text: 'You successfully logined with Github'}).setType('success');
+//            }).error(function(data){
+//                noty({text: 'Login Failed'}).setType('error');
+//            })
+//
+//        }).fail(function(err){
+//            alert(err);
+//        })
+//    };
+//
+//};
 
+
+/**
+ * Service
+ * @type {string[]}
+ */
+myApp.factory("AuthService",AuthService);
+AuthService.$inject = ['$http','REST_API_ENDPOINT'];
+function AuthService($http, REST_API_ENDPOINT){
+    var authService = {};
+    //doOAuthRegister
+    authService.doOAuthRegister = function(oauthCallbackResult){
+        return $http.post(REST_API_ENDPOINT + '/auth/github',oauthCallbackResult);
+    }
+    return authService;
+};
+
+/**
+ * Run
+ * @type {string[]}
+ */
 run.$inject = ['$rootScope', '$cookieStore', '$http', '$location'];
 function run($rootScope, $cookieStore, $http, $location) {
-    //$rootScope.globals = $cookieStore.get('globals') || {};
-    //if ($rootScope.globals.currentUser) {
-    //    console.log("User has logged in");
-    //    $http.defaults.headers.common.Authorization = 'Basic ' + $rootScope.globals.currentUser.authData;
-    //}
-
-    //$rootScope.$on("$locationChangeStart", function (event, next, current) {
-    //    var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
-    //    var loggedIn = $rootScope.globals.currentUser;
-    //    if (restrictedPage && !loggedIn) {
-    //        $location.path('/login');
-    //    }
-    //})
+    $rootScope.location = $location;
+    $rootScope.appRoot = '/app';
 }
-
-var g_server_ip = "http://localhost:8080";
-
