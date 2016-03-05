@@ -11,7 +11,8 @@ myAppOneRepo.controller('OneRepoController', OneRepoController);
 
 OneRepoController.$inject = ['$scope','$stateParams','OneRepoService','$localStorage','$http']
 function OneRepoController($scope, $stateParams,OneRepoService) {
-    alert($stateParams.userId);
-    $scope.currentRepo = OneRepoService.oneRepoResource.get({userId: $stateParams.userId, repoId: $stateParams.repoId});
+    alert($stateParams.userLogin);
+    alert($stateParams.repoName);
+    $scope.currentRepo = OneRepoService.oneRepoResource.get({userLogin: $stateParams.userLogin, repoName: $stateParams.repoName});
 }
 

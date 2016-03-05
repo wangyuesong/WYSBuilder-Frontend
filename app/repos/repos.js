@@ -12,11 +12,11 @@ myAppRepo.controller('RepoController', RepoController);
 RepoController.$inject = ['$scope','$stateParams','RepoService','$localStorage','$http']
 function RepoController($scope, $stateParams,RepoService,$localStorage,$http) {
     $http.defaults.headers.common['Authentication'] = $localStorage.userToken;
-    $scope.userRepos = RepoService.repoResource.query({userId: $stateParams.userId});
+    $scope.userRepos = RepoService.repoResource.query({userLogin: $stateParams.userLogin});
 
     $scope.updateUserRepos = function(){
-        RepoService.repoResource.sync({userId: $stateParams.userId},{}); //Don't forget payload for put
-        $scope.userRepos = RepoService.repoResource.query({userId: $stateParams.userId});
+        RepoService.repoResource.sync({userLogin: $stateParams.userLogin},{}); //Don't forget payload for put
+        $scope.userRepos = RepoService.repoResource.query({userLogin: $stateParams.userLogin});
     }
     //$scope.getUserRepos = function() {
     //    RepositoryService.doGetUserRepos($routeParams.userId).success(function(data){

@@ -27,8 +27,8 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', funct
     $urlRouterProvider.otherwise("/index");
     $stateProvider
         .state('index', {url: '/index', templateUrl: 'partials/index.partial.html'})
-        .state('repos', {url: '/users/:userId/repos', templateUrl: 'partials/repos.partial.html',controller:'RepoController'})
-        .state('oneRepo',{url: '/users/:userId/repos/:repoId',templateUrl:'partials/oneRepo.partial.html',controller: 'OneRepoController'});
+        .state('repos', {url: '/:userLogin', templateUrl: 'partials/repos.partial.html',controller:'RepoController'})
+        .state('oneRepo',{url: '/:userLogin/:repoName',templateUrl:'partials/oneRepo.partial.html',controller: 'OneRepoController'});
 }]).run(run);
 
 /**
