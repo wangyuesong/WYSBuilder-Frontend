@@ -1,0 +1,32 @@
+
+
+<table class="bordered highlight">
+    <thead>
+    <tr>
+        <th data-field="id">Branch</th>
+        <th data-field="name">Commit Message</th>
+        <th data-field="name">Commiter</th>
+        <th data-field="price">Commit Hash</th>
+        <th data-field="result">Result</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="build in allBuilds| filter: {commit_message : searchTerm} | orderBy:'commit_time':reverse track by $index">
+        <td><a ui-sref="oneRepo.oneBuildDetail({buildName: build.name})">{{build.branch}}</a></td>
+        <td>{{build.commit_message}}</td>
+        <td>{{build.commiter}}</td>
+        <td>{{build.name}}</td>
+        <td>{{build.status}}</td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function(){
+        $('.collapsible').collapsible({
+            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        });
+    });
+</script>

@@ -1,0 +1,40 @@
+
+
+<ul class="collapsible popout" data-collapsible="accordion" >
+    <li>
+        <form>
+            <div center class="input-field">
+                <input id="search" type="search" required placeholder="Type branch name to search" ng-model="searchTerm">
+                <label for="search"><i class="material-icons">search</i></label>
+                <i class="material-icons">close</i>
+            </div>
+        </form>
+    </li>
+
+    <li ng-repeat="branch in allBranches | filter: {branch_name : searchTerm} track by $index">
+        <div class="collapsible-header">
+            <i class="material-icons">call_split</i>
+            <div class="row">
+                <div class="col s2">
+                    {{branch.branch_name}}
+                </div>
+                <div class="col s2">
+                    Last {{branch.builds.length}} builds
+                </div>
+                <div class="col s2" ng-repeat="oneBuild in branch.builds | orderBy:'commit_time':reverse  track by oneBuild.name">
+                    <a ui-sref="oneRepo.oneBuildDetail({buildName: oneBuild.name})">
+                        <i ng-show="oneBuild.status == 'SUCCESS'" class="material-icons">done</i>
+                        <i ng-show="oneBuild.status == 'FAILURE'" class="material-icons">error</i>
+                        <i ng-show="oneBuild.status != 'SUCCESS' && oneBuild.status != 'FAILURE'" class="material-icons">warning</i>
+                        <span class="truncate">{{oneBuild.commit_message}}</span>
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="collapsible-body">
+               <div></div>
+            </div>
+        </div>
+    </li>
+</ul>

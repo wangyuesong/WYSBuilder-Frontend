@@ -28,10 +28,23 @@
 <body ng-app="myApp" ng-controller="MyAppController">
 
 <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+    <div class="nav-wrapper container"><a id="logo-container" ui-sref="index" class="brand-logo"><I>BIY</I></a>
         <ul class="right hide-on-med-and-down">
             <!--<li><a href="#">Navbar Link</a></li>-->
-            <div ng-if="isLoggedIn">{{currentUser.name}}</div>
+
+
+
+            <!-- Dropdown Structure -->
+
+
+            <div ng-if="isLoggedIn"> <a class='dropdown-button btn' href='#' data-activates='dropdown1'>{{currentUser.name}}</a></div>
+
+
+            <ul id='dropdown1' class='dropdown-content'>
+                <li><a ui-sref="repos({userLogin: currentUser.userLogin})">My Repositories</a></li>
+                <li class="divider"></li>
+                <li><a href="#!">Logout</a></li>
+            </ul>
             <!--<div ui-view></div>-->
             <div ng-if="!isLoggedIn"><button class="btn btn-default" type="submit" ng-disabled="form1.$invalid" ng-click="githubOAuth()">Login</button></div>
         </ul>
@@ -45,35 +58,33 @@
 
 <!--Add content here-->
 <div ui-view></div>
-
-
 <footer class="page-footer orange">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
-                <h5 class="white-text">Company Bio</h5>
-                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's
-                    our full time job. Any amount would help support and continue development on this project and is
-                    greatly appreciated.</p>
+                <h5 class="white-text">Author Bio</h5>
+                <p class="grey-text text-lighten-4">My name is YuesongWang and this is my course project for CS263 in UCSB.
+                    Currently there are still some limitations in this project.
+                    e.g Only Maven 3 project is supported. I will implement multi-language and parameterized builds in the future.</p>
 
 
             </div>
-            <div class="col l3 s12">
-                <h5 class="white-text">Settings</h5>
-                <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
-                </ul>
-            </div>
-            <div class="col l3 s12">
+            <!--<div class="col l3 s12">-->
+                <!--<h5 class="white-text">Settings</h5>-->
+                <!--<ul>-->
+                    <!--<li><a class="white-text" href="#!">Link 1</a></li>-->
+                    <!--<li><a class="white-text" href="#!">Link 2</a></li>-->
+                    <!--<li><a class="white-text" href="#!">Link 3</a></li>-->
+                    <!--<li><a class="white-text" href="#!">Link 4</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <div class="col l6 s12">
                 <h5 class="white-text">Connect</h5>
                 <ul>
-                    <li><a class="white-text" href="#!">Link 1</a></li>
-                    <li><a class="white-text" href="#!">Link 2</a></li>
-                    <li><a class="white-text" href="#!">Link 3</a></li>
-                    <li><a class="white-text" href="#!">Link 4</a></li>
+                    <li><a class="white-text" href="https://github.com/wangyuesong/WYSBuilder-Backend">Project Github Link</a></li>
+                    <li><a class="white-text" href="https://www.facebook.com/profile.php?id=100006784235764">Yuesong's Facebook</a></li>
+                    <li><a class="white-text" href="https://www.linkedin.com/in/yuesong-wang-31387ba3">Yuesong's Linkedin</a></li>
+                    <li><a class="white-text" href="http://materializecss.com">Materialize CSS</a></li>
                 </ul>
             </div>
         </div>
@@ -91,7 +102,6 @@
 
 </body>
 
-<div>Angular seed app: v<span app-version></span></div>
 <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
 -->

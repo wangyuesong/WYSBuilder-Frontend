@@ -3,21 +3,48 @@
 var myAppRepo = angular.module('myApp.repo',['ngResource']);
 
 
-myAppRepo.constant('OAUTH_IO_PUBLIC_KEY','sd_5pFI5b58he3Ku1erCZh8qg3w');
-myAppRepo.constant('REST_API_ENDPOINT','http://127.0.0.1:8080/rest');
-
-
 myAppRepo.controller('RepoController', RepoController);
 
 RepoController.$inject = ['$scope','$stateParams','RepoService','$localStorage','$http']
 function RepoController($scope, $stateParams,RepoService,$localStorage,$http) {
     $http.defaults.headers.common['Authentication'] = $localStorage.userToken;
-    $scope.userRepos = RepoService.repoResource.query({userLogin: $stateParams.userLogin});
+
+    $scope.userRepos = RepoService.doGetRepos($stateParams.userLogin);
 
     $scope.updateUserRepos = function(){
-        RepoService.repoResource.sync({userLogin: $stateParams.userLogin},{}); //Don't forget payload for put
-        $scope.userRepos = RepoService.repoResource.query({userLogin: $stateParams.userLogin});
+        RepoService.doSyncRepos($stateParams.userLogin);
+        $scope.userRepos = RepoService.doGetRepos($stateParams.userLogin);
     }
+
+    $scope.changeHook = function(repoName){
+        var isAdd;
+        for(var i = 0; i < $scope.userRepos.length; i ++){
+            if($scope.userRepos[i].name == repoName) {
+                isAdd = $scope.userRepos[i].is_hooked;
+            }
+        }
+        if(isAdd){
+            RepoService.doAddWebhook($stateParams.userLogin, repoName);
+            noty({text: 'Project: ' + repoName + " will be built when there is a change"}).setType('success');
+        }else{
+            RepoService.doDeleteWebhook($stateParams.userLogin, repoName);
+            noty({text: 'Stop auto building for Project: ' + repoName}).setType('warning');
+        }
+        //if($scope.userRepos)
+        //RepoService.doAddWebhook($stateParams.userLogin, repoName);
+        //$scope.userRepos = RepoService.doGetRepos($stateParams.userLogin);
+    }
+
+    $scope.deleteWebhook = function(repoName){
+        RepoService.doDeleteWebhook($stateParams.userLogin, repoName);
+        $scope.userRepos = RepoService.doGetRepos($stateParams.userLogin);
+    }
+
+
+
+
+
+
     //$scope.getUserRepos = function() {
     //    RepositoryService.doGetUserRepos($routeParams.userId).success(function(data){
     //        return data;

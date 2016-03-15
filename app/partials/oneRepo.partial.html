@@ -2,13 +2,50 @@
 
 <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-        <nav>
-            <div class="nav-wrapper cyan lighten-4">
-                <a href="#" class="brand-logo center text-blue-grey darken-2-text">{{currentRepo.name}}</a>
-                <a class="waves-effect waves-teal btn-flat">Branches</a>
-
+        <nav style="color:white">
+            <div class="white">
+                 <h2 class="center-align" style="color:#ff8a65"> <I>{{currentRepo.name}}</I></h2>
             </div>
         </nav>
 
+
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a id="current" ui-sref="oneRepo.current">Current</a></li>
+                    <li class="tab col s3"><a id="branches" ui-sref="oneRepo.branches">Branches</a></li>
+                    <li class="tab col s3"><a id="builds" ui-sref="oneRepo.builds">Build History</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div ui-view></div>
+
+
     </div>
+    \
 </div>
+<script>
+    $(document).ready(function(){
+        $('ul.tabs').tabs();
+        $('#builds')[0].click(function(event){
+
+        });
+//        var current_url = window.location.href;
+//        var tabAndClass = {
+//            "current": $("#current"),
+//            "branches": $("#branches"),
+//            "builds": $("#builds")
+//        }
+//        var currentTab = current_url.substring(current_url.lastIndexOf('/')+1);
+//        alert(currentTab);
+//        if(currentTab == ''){
+//            currentTab = "builds";
+//        }
+//
+//        tabAndClass[currentTab].toggleClass("active");
+
+    });
+
+</script>
