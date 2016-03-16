@@ -37,6 +37,7 @@ If you just want to start a new project without the angular-seed commit history 
 git clone --depth=1 https://github.com/angular/angular-seed.git <your-project-name>
 ```
 
+
 The `depth=1` tells git to only pull down one commit worth of historical data.
 
 ### Install Dependencies
