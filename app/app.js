@@ -23,7 +23,7 @@ myApp.constant('REST_API_ENDPOINT','https://cs263project-yuesongwang.appspot.com
 myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
     $.noty.defaults.timeout = 2000;
-    $locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise("/index");
     $stateProvider
         .state('index', {url: '/index', templateUrl: 'partials/index.partial.html', controller: "IndexController"})
