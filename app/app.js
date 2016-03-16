@@ -24,17 +24,17 @@ myApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', funct
 
     $.noty.defaults.timeout = 2000;
     //$locationProvider.html5Mode(true);
-    $urlRouterProvider.otherwise("/index");
+    $urlRouterProvider.otherwise("/#/index");
     $stateProvider
-        .state('index', {url: '/index', templateUrl: 'partials/index.partial.html', controller: "IndexController"})
-        .state('empty', {url: '/', templateUrl: 'partials/404.html'})
-        .state('repos', {url: '/:userLogin', templateUrl: 'partials/repos.partial.html',controller:'RepoController'})
-        .state('oneRepo',{url: '/:userLogin/:repoName',templateUrl:'partials/oneRepo.partial.html',controller: 'OneRepoController'})
-        .state('oneRepo.current',{url: '/current',templateUrl:'partials/oneRepo.current.partial.html',controller: 'OneRepoCurrentController'})
-        .state('oneRepo.branches',{url: '/branches',templateUrl:'partials/oneRepo.branches.partial.html',controller: 'OneRepoBranchesController'})
-        .state('oneRepo.builds',{url: '/builds',templateUrl:'partials/oneRepo.builds.partial.html',controller: 'OneRepoBuildsController'})
-        .state('oneRepo.oneBuildDetail',{url: '/builds/:buildName',templateUrl:'partials/oneRepo.oneBuildDetail.partial.html',controller: 'OneRepoBuildDetailController'})
-        .state("otherwise", {url: "*path",templateUrl: "partials/404.html"})
+        .state('index', {url: '/#/index', templateUrl: '/WYSBuilder-Frontend/app/partials/index.partial.html', controller: "IndexController"})
+        .state('empty', {url: '/#/', templateUrl: '/WYSBuilder-Frontend/app/partials/404.html'})
+        .state('repos', {url: '/#/:userLogin', templateUrl: '/WYSBuilder-Frontend/app/partials/repos.partial.html',controller:'RepoController'})
+        .state('oneRepo',{url: '/#/:userLogin/:repoName',templateUrl:'/WYSBuilder-Frontend/app/partials/oneRepo.partial.html',controller: 'OneRepoController'})
+        .state('oneRepo.current',{url: '/#/current',templateUrl:'/WYSBuilder-Frontend/app/partials/oneRepo.current.partial.html',controller: 'OneRepoCurrentController'})
+        .state('oneRepo.branches',{url: '/#/branches',templateUrl:'/WYSBuilder-Frontend/app/partials/oneRepo.branches.partial.html',controller: 'OneRepoBranchesController'})
+        .state('oneRepo.builds',{url: '/#/builds',templateUrl:'/WYSBuilder-Frontend/app/partials/oneRepo.builds.partial.html',controller: 'OneRepoBuildsController'})
+        .state('oneRepo.oneBuildDetail',{url: '/#/builds/:buildName',templateUrl:'/WYSBuilder-Frontend/app/partials/oneRepo.oneBuildDetail.partial.html',controller: 'OneRepoBuildDetailController'})
+        .state("otherwise", {url: "*path",templateUrl: "/WYSBuilder-Frontend/app/partials/404.html"})
 }]).run(run);
 
 /**
